@@ -19,29 +19,37 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
-    EditText EmailId,Password;
-    Button SignIn;
+    EditText UserName,EmailId,Password,ConfirmPassword;
+    Button SignUp;
     ImageButton GoogleBtn;
+    ProgressBar progressBar;
+    TextView AlreadyAccount;
     FirebaseAuth firebaseAuth;
-    ProgressBar LoginProgressBar;
-    TextView CreateAcc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_sign_up);
 
 
 
+        UserName = findViewById(R.id.UserName);
         EmailId = findViewById(R.id.emailBox);
         Password = findViewById(R.id.passwordBox);
-        SignIn = findViewById(R.id.signInBtn);
+        ConfirmPassword = findViewById(R.id.confirmPasswordBox);
+        SignUp = findViewById(R.id.signUpBtn);
         GoogleBtn = findViewById(R.id.googleBtn);
-        LoginProgressBar = findViewById(R.id.loginProgressBar);
+        progressBar = findViewById(R.id.signUp_progressBar);
+        AlreadyAccount = findViewById(R.id.alreadyAccount);
         firebaseAuth = FirebaseAuth.getInstance();
-        CreateAcc = findViewById(R.id.createHere);
-        SignIn.setOnClickListener(new View.OnClickListener() {
+
+        if(firebaseAuth.getCurrentUser() != null){
+            startActivity(new Intent(getApplicationContext(),CourseActivity.class));
+            finish();
+        }
+
+        SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = EmailId.getText().toString().trim();
@@ -61,34 +69,35 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                LoginProgressBar.setVisibility(View.VISIBLE);
-                SignIn.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                SignUp.setVisibility(View.GONE);
 
-                firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Toast.makeText(LoginActivity.this,"Logged In Successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this,CourseActivity.class));
+                        if(task.isSuccessful()){
+                            Toast.makeText(SignUpActivity.this,"User Created", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
                             finish();
+
                         }
                         else {
-                            Toast.makeText(LoginActivity.this,"Error"+ task.getException(),Toast.LENGTH_SHORT).show();
-                            LoginProgressBar.setVisibility(View.GONE);
-                            SignIn.setVisibility(View.VISIBLE);
+                            Toast.makeText(SignUpActivity.this,"Error"+ task.getException(),Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                            SignUp.setVisibility(View.VISIBLE);
                         }
-
                     }
                 });
             }
         });
 
-        CreateAcc.setOnClickListener(new View.OnClickListener() {
+        AlreadyAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this,SignUpActivity.class));
+                startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
                 finish();
             }
         });
+
     }
 }

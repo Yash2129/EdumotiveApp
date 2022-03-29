@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText EmailId,Password;
     Button SignIn;
-    ImageButton GoogleBtn;
+
     FirebaseAuth firebaseAuth;
     ProgressBar LoginProgressBar;
     TextView CreateAcc;
@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         EmailId = findViewById(R.id.emailBox);
         Password = findViewById(R.id.passwordBox);
         SignIn = findViewById(R.id.signInBtn);
-        GoogleBtn = findViewById(R.id.googleBtn);
+
         LoginProgressBar = findViewById(R.id.loginProgressBar);
         firebaseAuth = FirebaseAuth.getInstance();
         CreateAcc = findViewById(R.id.createHere);

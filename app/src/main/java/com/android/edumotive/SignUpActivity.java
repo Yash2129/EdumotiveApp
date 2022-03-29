@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,18 +17,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
     EditText UserName,EmailId,Password,ConfirmPassword;
     Button SignUp;
-    ImageButton GoogleBtn;
+
     ProgressBar progressBar;
     TextView AlreadyAccount;
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore fireStore;
+    String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +49,11 @@ public class SignUpActivity extends AppCompatActivity {
         Password = findViewById(R.id.passwordBox);
         ConfirmPassword = findViewById(R.id.confirmPasswordBox);
         SignUp = findViewById(R.id.signUpBtn);
-        GoogleBtn = findViewById(R.id.googleBtn);
+
         progressBar = findViewById(R.id.signUp_progressBar);
         AlreadyAccount = findViewById(R.id.alreadyAccount);
         firebaseAuth = FirebaseAuth.getInstance();
+        fireStore = FirebaseFirestore.getInstance();
 
         if(firebaseAuth.getCurrentUser() != null){
             startActivity(new Intent(getApplicationContext(),CourseActivity.class));
@@ -54,6 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = EmailId.getText().toString().trim();
                 String password = Password.getText().toString().trim();
+                String userName = UserName.getText().toString();
 
 
                 if (TextUtils.isEmpty(email)){
@@ -77,6 +89,12 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(SignUpActivity.this,"User Created", Toast.LENGTH_SHORT).show();
+                            userID = firebaseAuth.getCurrentUser().getUid();
+                            DocumentReference documentReference = fireStore.collection("users").document(userID);
+                            Map<String,Object> user = new HashMap<>();
+                            user.put("User Name",userName);
+                            user.put("Email Address",email);
+                            documentReference.set(user);
                             startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
                             finish();
 

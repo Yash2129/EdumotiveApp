@@ -49,7 +49,6 @@ public class SignUpActivity extends AppCompatActivity {
         Password = findViewById(R.id.passwordBox);
         ConfirmPassword = findViewById(R.id.confirmPasswordBox);
         SignUp = findViewById(R.id.signUpBtn);
-
         progressBar = findViewById(R.id.signUp_progressBar);
         AlreadyAccount = findViewById(R.id.alreadyAccount);
         firebaseAuth = FirebaseAuth.getInstance();

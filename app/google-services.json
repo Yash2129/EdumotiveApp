@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "273136135794",
+    "project_id": "edumotive-fe46a",
+    "storage_bucket": "edumotive-fe46a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273136135794:android:c952277ca8b267e9541ceb",
+        "android_client_info": {
+          "package_name": "com.android.edumotive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273136135794-8rbhbn554h5cjedmahicb4f3mo82qpvi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP67hNf3X_Angc66EVwWd7DUqLXR0lxzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273136135794-8rbhbn554h5cjedmahicb4f3mo82qpvi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
